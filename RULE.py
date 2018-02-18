@@ -21,18 +21,27 @@ class Rule:
 						and in list, sets are allowed to support factoring.
 	:param lhs: NTer object; a non-terminal which is in its LHS.
 	:param lr_flag:boolean; False only if it is for sure that self is not Left Recursive
+	:param is_epsilon: boolean; If this is true than the rule is empty.
 	"""
 
-	def __init__(self, lhs, lis, lr_flag = True):
+	def __init__(self, lhs, lis, lr_flag = True, is_epsilon = False):
 		self.lis = lis
 		self.lhs = lhs
+		self.is_epsilon = is_epsilon
 		self._lr_flag = lr_flag
+		if self.is_epsilon:
+			assert( self.lis is None)
+			assert( self._lr_flag == False)
 
 	def is_this_rule_LR(self, Nter_dic):
 		"""
 		this method just sees if the rule_list is Left recursive.
 		:return:boolean; self._lr_flag
 		"""
+		if self.is_epsilon:
+			assert( self.lis is None)
+			assert( self._lr_flag == False)
+			return self._lr_flag
 		item = self.lis[0]
 		if type(item) == set:
 			for rule in item:

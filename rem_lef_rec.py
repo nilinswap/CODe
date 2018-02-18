@@ -21,14 +21,15 @@ def rem_LR(NTer_obj, NTer_dic):
 	if nter_obj.is_LR():
 		assert(len(nter_obj.lr_rule_set)!= 0)
 		for rule in nter_obj.lr_rule_set:
-			for item in rule.lis:
-				if type(item) == set:
-					for new_rule in item:
-						if not new_rule.is_same_as(nter_obj) and new_rule.is_LR():
+			if not rule.is_epsilon:
+				for item in rule.lis:
+					if type(item) == set:
+						for new_rule in item:
+							if not new_rule.is_same_as(nter_obj) and new_rule.is_LR():
+								rem_LR(item, NTer_dic)
+					else:
+						if type(item) != str and not item.is_same_as(nter_obj) and item.is_LR():
 							rem_LR(item, NTer_dic)
-				else:
-					if type(item) != str and not item.is_same_as(nter_obj) and item.is_LR():
-						rem_LR(item, NTer_dic)
 	nter_obj.set_LR_list(NTer_dic)
 	if nter_obj.is_LR():
 		assert (len(nter_obj.lr_rule_set) != 0)
@@ -45,15 +46,16 @@ def rem_LR(NTer_obj, NTer_dic):
 						beth
 			else:"""
 			assert( type(rule.lis[0]) != set)
-			assert(rule.lis[0].is_same_as(nter_obj))
+			assert(rule.lis[0].is_same_as(nter_obj)) #very important assertion
 			new_rule = RULE.Rule(new_nter.name, rule.lis[1:], lr_flag = False)
 			seth.add(new_rule)
 		assert(len(seth) != 0)
 		assert (len(not_lr_rule_set)!= 0)
 		new_last_rule = RULE.Rule(new_nter.name, [seth, new_nter], lr_flag = False)
-		new_nter.set_rules(se = {new_last_rule})
-		new_last_rule = RULE.Rule(nter_obj.name, [not_lr_rule_set, new_nter], lr_flag=False)
-		nter_obj.set_rules(se = {new_last_rule})
+		new_last_rule_empty = RULE.Rule(lhs = new_nter.name, lis = None, lr_flag= False, is_epsilon = True)
+		new_nter.set_rules(se = {new_last_rule, new_last_rule_empty})
+		an_new_last_rule = RULE.Rule(nter_obj.name, [not_lr_rule_set, new_nter], lr_flag=False)
+		nter_obj.set_rules(se = {an_new_last_rule})
 		NTer_dic[nter_obj.name] = nter_obj
 		NTer_dic[new_nter.name] = new_nter
 		nter_obj.set_LR_list(NTer_dic)

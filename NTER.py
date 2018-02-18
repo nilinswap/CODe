@@ -53,20 +53,33 @@ class NTer:
 			assert( type(se) == set)
 			self.rule_set.union( se )
 			return
-
+		st = st.rstrip().lstrip()
 		comp_obj = re.compile("\s")
 		lis = []
+		epsilon_flag = True
+		### scope for imporvement
 		for ch in st:
 			if ch in NTer_dic:
 				lis.append(NTer_dic[ch])
+				epsilon_flag = False
 			elif comp_obj.match(ch) is not None:
 				continue
 			else :
 				lis.append(ch)
+				epsilon_flag = False
 
 		if self.rule_set is None:
 			self.rule_set = set([])
-		rul = RULE.Rule(lhs = self, lis = lis)
+		if epsilon_flag:
+			assert(len(st) == 1)
+			lis = None
+			rul = RULE.Rule(lhs=self, lis=lis, lr_flag= False, is_epsilon= True)
+		else:
+			rul = RULE.Rule(lhs=self, lis=lis)
+
+		###
+
+
 		self.rule_set.add(rul)
 
 
