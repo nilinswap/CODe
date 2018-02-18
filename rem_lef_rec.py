@@ -1,18 +1,27 @@
 #rem_lef_rec.py
 import NTER
 import RULE
-
-
-def rem_LR(NTer_obj, NTer_dic):
+from helper import *
+def rem_LR( NTer_dic, NTer_obj = None):
 	'''
 
 	This function changes the dictionary around NTer_obj to remove its Left Recursion
 
 
-	:param Nter_obj: NTer class object or string
+
 	:param NTer_dic: the dictionary with handles as keys to the values non-terminals
-	:return:
+	:param Nter_obj: NTer class object or string, when None the whole grammer is 'rem_LR'ed
+	:return: None
 	'''
+	if NTer_obj is None:
+
+		'''for rule_name in NTer_dic: SEE BECAUSE THE NTer_dic GETS UPDATED, THIS WAS WRONG'''
+		LR_nter_lis =  grammers_LR_nter(NTer_dic)
+		while len(LR_nter_lis):
+			for nter in LR_nter_lis:
+				rem_LR(NTer_dic, nter)
+			LR_nter_lis = grammers_LR_nter(NTer_dic)
+		return
 	if type(NTer_obj) == str:
 		nter_obj = NTer_dic[NTer_obj]
 	else:
@@ -26,15 +35,18 @@ def rem_LR(NTer_obj, NTer_dic):
 					if type(item) == set:
 						for new_rule in item:
 							if not new_rule.is_same_as(nter_obj) and new_rule.is_LR():
-								rem_LR(item, NTer_dic)
+								rem_LR(NTer_dic, item)
 					else:
 						if type(item) != str and not item.is_same_as(nter_obj) and item.is_LR():
-							rem_LR(item, NTer_dic)
+							rem_LR(NTer_dic, item)
 	nter_obj.set_LR_list(NTer_dic)
 	if nter_obj.is_LR():
 		assert (len(nter_obj.lr_rule_set) != 0)
 		not_lr_rule_set = nter_obj.rule_set - nter_obj.lr_rule_set
-		new_nter = NTER.NTer(nter_obj.name+"'", lr_flag= False)
+		name = nter_obj.name + "`"
+		while name in NTer_dic:
+			name += "`"
+		new_nter = NTER.NTer(name, lr_flag= False)
 		seth = set([])
 		for rule in nter_obj.lr_rule_set:
 			"""if type(rule.lis[0]) == set:
@@ -83,7 +95,7 @@ def test():
 
 
 	#print(new_ob1, new_ob2, [item.lis for item in new_ob1.rule_set])
-	rem_LR('E', nter_dic)
+	rem_LR(nter_dic)
 	print()
 	#print(dic)
 if __name__ == '__main__':

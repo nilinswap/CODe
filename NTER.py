@@ -13,16 +13,23 @@ class NTer:
 
 
 	"""
-	def __init__(self, name, rule_set = None, lr_flag = True):
+	def __init__(self, name, rule_set = None, lr_flag = True, lf_flag = False ):
 		self.name = name
 		self.rule_set = rule_set
 		self._lr_flag = lr_flag
+		self._lf_flag = lf_flag
 	def is_LR(self):
 		"""
 		to see if it is LR.
 		:return: lr_flag: boolean, False when sure that self is not left recursive.
 		"""
 		return self._lr_flag
+	def is_not_LF(self):
+		"""
+		to see if it is LF.
+		:return: lf_flag: boolean, False when sure that self is not left factored.
+		"""
+		return not self._lf_flag
 	def is_same_as(self, item):
 		'''
 		just sees if item is same as self.

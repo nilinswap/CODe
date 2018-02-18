@@ -19,6 +19,7 @@ class Rule:
 						Idea is each non-terminal can be on the LHS of many rules therefore
 						overall is a set, and in each rule sequence matters therefore a list
 						and in list, sets are allowed to support factoring.
+				This is None ideally when epsilon is captured.
 	:param lhs: NTer object; a non-terminal which is in its LHS.
 	:param lr_flag:boolean; False only if it is for sure that self is not Left Recursive
 	:param is_epsilon: boolean; If this is true than the rule is empty.
@@ -32,7 +33,11 @@ class Rule:
 		if self.is_epsilon:
 			assert( self.lis is None)
 			assert( self._lr_flag == False)
-
+	def has_nter(self):
+		for item in self.lis:
+			if type(item) != str:
+				return True
+		return False
 	def is_this_rule_LR(self, Nter_dic):
 		"""
 		this method just sees if the rule_list is Left recursive.
