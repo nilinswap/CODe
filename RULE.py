@@ -93,9 +93,9 @@ class Rule:
 			print("}")
 
 	def find_first(self, index = 0):
-		if index == len(self.lis):
+		if self.is_epsilon == True or index == len(self.lis):
 			return {"eps"}
-		item = rule_lis[index]
+		item = self.lis[index]
 		set_to_send = set([])
 		if type(item) == str:
 			set_to_send.add(item)
@@ -103,10 +103,10 @@ class Rule:
 		if type(item) == NTER.NTer:
 
 			new_set = item.give_first_set()
-			set_to_send.union(new_set)
+			set_to_send = set_to_send.union(new_set)
 			if first_set_has_epsilon( new_set):
 				new_set = self.find_first(index=index + 1)
-				set_to_send.union(new_set)
+				set_to_send = set_to_send.union(new_set)
 			return set_to_send
 		if type(item) == Rule:
 			print("LFDSJLFKJSLKJLKDJLKSDJFjdsjwiejosd")
@@ -117,11 +117,12 @@ class Rule:
 			new_set = set([])
 			for rule in item:
 				new_set = rule.find_first()
-				set_to_send.union(new_set)
-				if first_set_has_epsilon(new_set)
+				set_to_send = set_to_send.union(new_set)
+				if first_set_has_epsilon(new_set):
 					flag = True
 			if flag:
 				new_set = self.find_first(index=index + 1)
-				set_to_send.union(new_set)
+				set_to_send = set_to_send.union(new_set)
+		return set_to_send
 
 

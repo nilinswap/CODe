@@ -59,7 +59,7 @@ class NTer:
 			if self.rule_set is None:
 				self.rule_set = set([])
 			assert( type(se) == set)
-			self.rule_set.union( se )
+			self.rule_set = self.rule_set.union( se )
 			return
 		st = st.rstrip().lstrip()
 		comp_obj = re.compile("\s")
@@ -111,7 +111,8 @@ class NTer:
 			return self.first_set
 		set_to_set = set([])
 		for rule in self.rule_set:
-			set_to_set.union(rule.find_first())
+			new_set = rule.find_first()
+			set_to_set = set_to_set.union(new_set)
 		self.first_set = set_to_set
 		return self.first_set
 	def pp(self):

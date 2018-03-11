@@ -77,6 +77,7 @@ def test():
 	print(Lef_fac(nter_dic))
 	for strin in nter_dic:
 		nter_dic[strin].pp()
+	print(nter_dic['E'].give_first_set())
 	print()
 test()
 
