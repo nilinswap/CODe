@@ -71,5 +71,15 @@ def update_ndic_for_lef_fac(Nter_dic, first_terminal_common_rule_set, nter, set_
 	Nter_dic[new_nter.name] = new_nter
 	return
 
+def find_first(rule_lis):
+	item = rule_lis[0]
+	set_to_send = set([])
+	if type(item) == str:
+		set_to_send.add(item)
+		return set_to_send
+	if type(item) == NTER.NTer:
+		new_set = item.give_first_set()
 
+	if type(item) == Rule:
 
+	if type(item) == set:

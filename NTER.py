@@ -10,14 +10,15 @@ class NTer:
 	 				handle for non-terminal in grammer's input format.
 	:param rule_set: set of  Rule objects from RULE.py
 	:param lr_flag: boolean, False when sure that self is not left recursive.
-
+	:param first_set: set, set of tokens that can be first derived from E
 
 	"""
-	def __init__(self, name, rule_set = None, lr_flag = True, lf_flag = False ):
+	def __init__(self, name, rule_set = None, lr_flag = True, lf_flag = False, first_set = None ):
 		self.name = name
 		self.rule_set = rule_set
 		self._lr_flag = lr_flag
 		self._lf_flag = lf_flag
+		self.first_set = first_set
 	def is_LR(self):
 		"""
 		to see if it is LR.
@@ -105,6 +106,20 @@ class NTer:
 
 		self._lr_flag = flag
 		return flag
+	def give_first_set(self):
+		if self.first_set:
+			return self.first_set
+		set_to_set = set([])
+		for rule in self.rule_set:
+			set_to_set.union(rule.find_first())
+		self.first_set = set_to_set
+		return self.first_set
+	def pp(self):
+		print("---------"+self.name+"------------")
+		for rhule in self.rule_set:
+			rhule.pp()
+
+		print("\n***********************************")
 
 def test():
 	name1 = 'E'

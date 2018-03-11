@@ -75,6 +75,8 @@ def test():
 	# print(new_ob1, new_ob2, [item.lis for item in new_ob1.rule_set])
 	# rem_LR(nter_dic)
 	print(Lef_fac(nter_dic))
+	for strin in nter_dic:
+		nter_dic[strin].pp()
 	print()
 test()
 

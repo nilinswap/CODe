@@ -73,7 +73,6 @@ def rem_LR( NTer_dic, NTer_obj = None):
 		nter_obj.set_LR_list(NTer_dic)
 	return
 def test():
-
 	#st = input("enter the all the non-terminals seperated by spaces ")
 	st = 'E T F'
 	st_lis = st.rstrip().lstrip().split(' ')
